@@ -14,21 +14,65 @@ Graph::~Graph() {
 
 }
 
+std::list<int> Graph::getEulerCircuit() {
+	bool** visited = createVisitedArray();
+
+	int v = -1;
+
+	//use find circuit to find the base circuit
+	std::list<int> circuit = findCircuit(0, visited);
+	std::list<int> L1;
+
+	//create iterator that point the will point to the first element in the circuit
+	std::list<int>::iterator itrList = circuit.begin();
+	
+	//while the iterator is not the end of the circuit
+	while (itrList != circuit.end()) {
+		if(hasUnvisitedEdge(visited, *itrList)) {
+			v = findUnvisitedEdge(visited, *itrList);
+			
+			visited[*itrList][v] = true;
+
+			//if the graph is undirected, then we need to mark the edge as visited in the opposite direction
+			if (isDirected == 'n') {
+				visited[v][*itrList] = true;
+			}
+
+			L1 = findCircuit(v, visited);
+
+			circuit.splice(std::next(itrList), L1);
+		}
+
+		//go to the next element in the list
+		++itrList;
+	}
+
+	//print the circuit
+	cout << "The circuit: ";
+	for (auto itr = circuit.begin(); itr != circuit.end(); ++itr) {
+		cout << (*itr + 1) << " ";
+	}
+
+	return circuit;
+}
+
 //The function find circuit in the graph, and return a list the contains this circuit in the graph, the function get vertex v0 as parameter
-std::list<int> Graph::findCircuit(int v0) {
+std::list<int> Graph::findCircuit(int v0, bool** visited) {
 	int v = v0;
 	int u = -1;
 	std::list<int> circuit;
-	bool** visited = createVisitedArray();
 	circuit.push_back(v);
 
 	while (hasUnvisitedEdge(visited, v)) {
 		u = findUnvisitedEdge(visited, v);
 		visited[v][u] = true;
 
+		cout << "markted edge: " << v + 1 << " " << u + 1 << endl;
+
 		//If the graph undirected, then we need to mark the edge as visited in the opposite direction
 		if (isDirected == 'n') {
 			visited[u][v] = true;
+			cout << "markted edge: " << u + 1 << " " << v + 1 << endl;
 		}
 
 		circuit.push_back(u);
@@ -36,13 +80,16 @@ std::list<int> Graph::findCircuit(int v0) {
 	}
 
 	//print the circuit
-	cout << "The circuit: ";
+	cout << "The circuit: " << endl;;
 	for (auto itr = circuit.begin(); itr != circuit.end(); ++itr) {
-		cout << *itr << " ";
+		cout << (*itr + 1) << " ";
 	}
+	
+	cout << endl;
 
 	return circuit;
 }
+
 
 //The function gets 2d visited array, and find unvisited edge, and return the vertex of the unvisited edge
 int Graph::findUnvisitedEdge(bool** visited, int v) {
@@ -195,13 +242,20 @@ bool** Graph::createVisitedArray() {
 
 	//Create the 2d array
 	for (int i = 0; i < n; i++) {
-		visited[i] = new bool[adjList[i].size()];
+		if (adjList[i].size() > 0) {
+			visited[i] = new bool[n];
+		}
+		else {
+			visited[i] = nullptr;
+		}
 	}
 
 	//Initialize all the values with false
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < adjList[i].size(); j++) {
-			visited[i][j] = false;
+		for (int j = 0; j < n; j++) {
+			if (visited[i] != nullptr) {
+				visited[i][j] = false;
+			}
 		}
 	}
 

@@ -12,7 +12,10 @@ public:
 	Graph(char isDirected, int n, int m);
 	~Graph();
 
-	std::list<int> findCircuit(int v0);
+	std::list<int> getEulerCircuit();
+
+	std::list<int> findCircuit(int v0, bool** visited);
+
 
 	int findUnvisitedEdge(bool** visited, int v);
 

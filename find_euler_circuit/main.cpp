@@ -36,7 +36,7 @@ int main() {
 		cout << "The graph is not Eulerian" << endl;
 
 
-	graph.findCircuit(0);
+	graph.getEulerCircuit();
 
 
 	

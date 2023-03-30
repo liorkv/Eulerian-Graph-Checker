@@ -26,14 +26,10 @@ int main() {
 		graph.addEdge(u, v);
 	}	
 
-	graph.printGraph();
-
-	cout << endl << endl;
-
 	if(graph.isEulerian())
-		cout << "The graph is Eulerian" << endl;
+		cout << "The graph is eulerian" << endl;
 	else
-		cout << "The graph is not Eulerian" << endl;
+		cout << "The graph is not eulerian" << endl;
 
 
 	graph.getEulerCircuit();

@@ -48,10 +48,16 @@ std::list<int> Graph::getEulerCircuit() {
 	}
 
 	//print the circuit
-	cout << "The circuit: ";
+	cout << "(";
 	for (auto itr = circuit.begin(); itr != circuit.end(); ++itr) {
-		cout << (*itr + 1) << " ";
+		cout << (*itr + 1);
+
+		if (std::next(itr) != circuit.end()) {
+			cout << ",";
+		}
+
 	}
+	cout << ")";
 
 	return circuit;
 }
@@ -67,25 +73,14 @@ std::list<int> Graph::findCircuit(int v0, bool** visited) {
 		u = findUnvisitedEdge(visited, v);
 		visited[v][u] = true;
 
-		cout << "markted edge: " << v + 1 << " " << u + 1 << endl;
-
 		//If the graph undirected, then we need to mark the edge as visited in the opposite direction
 		if (isDirected == 'n') {
 			visited[u][v] = true;
-			cout << "markted edge: " << u + 1 << " " << v + 1 << endl;
 		}
 
 		circuit.push_back(u);
 		v = u;
 	}
-
-	//print the circuit
-	cout << "The circuit: " << endl;;
-	for (auto itr = circuit.begin(); itr != circuit.end(); ++itr) {
-		cout << (*itr + 1) << " ";
-	}
-	
-	cout << endl;
 
 	return circuit;
 }
@@ -185,42 +180,11 @@ bool Graph::isGraphConnected() {
 
 void Graph::Visit(bool* visited, int u) {
 	visited[u] = true;
-	logMethodFor_Visit(visited, u);
 
 	//Travers the adjacency list of the current node
 	for (auto itr = adjList[u].begin(); itr != adjList[u].end(); ++itr) {
 		if (!visited[*itr]) {
 			Visit(visited, *itr);
-		}
-	}
-}
-
-//FOR TESTING PURPOSE ONLY
-void Graph::logMethodFor_Visit(bool* visited, int nodeIndex) {
-	//Print all node that are connected to the current node
-	cout << "Current node is: " << nodeIndex << endl;
-	cout << "It is connected to:";
-	for (auto itr = adjList[nodeIndex].begin(); itr != adjList[nodeIndex].end(); ++itr) {
-		cout << *itr << " ";
-	}
-
-	cout << endl;
-
-	//Print the status of the visited array
-	cout << "Visited array: " << endl;
-	printAdjacencyList(visited);
-}
-//////////////////////////////////////////////
-
-void Graph::printAdjacencyList(bool* visited) {
-	//for every node print if it 's visited or not
-	for (int i = 0; i < n; i++) {
-		std::cout << i << " : ";
-		if (visited[i] == true) {
-			std::cout << "visited" << std::endl;
-		}
-		else {
-			std::cout << "not visited" << std::endl;
 		}
 	}
 }

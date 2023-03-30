@@ -14,6 +14,56 @@ Graph::~Graph() {
 
 }
 
+//The function find circuit in the graph, and return a list the contains this circuit in the graph, the function get vertex v0 as parameter
+std::list<int> Graph::findCircuit(int v0) {
+	int v = v0;
+	int u = -1;
+	std::list<int> circuit;
+	bool** visited = createVisitedArray();
+	circuit.push_back(v);
+
+	while (hasUnvisitedEdge(visited, v)) {
+		u = findUnvisitedEdge(visited, v);
+		visited[v][u] = true;
+
+		//If the graph undirected, then we need to mark the edge as visited in the opposite direction
+		if (isDirected == 'n') {
+			visited[u][v] = true;
+		}
+
+		circuit.push_back(u);
+		v = u;
+	}
+
+	//print the circuit
+	cout << "The circuit: ";
+	for (auto itr = circuit.begin(); itr != circuit.end(); ++itr) {
+		cout << *itr << " ";
+	}
+
+	return circuit;
+}
+
+//The function gets 2d visited array, and find unvisited edge, and return the vertex of the unvisited edge
+int Graph::findUnvisitedEdge(bool** visited, int v) {
+	for (auto itr = adjList[v].begin(); itr != adjList[v].end(); ++itr) {
+		if (!visited[v][*itr]) {
+			return *itr;
+		}
+	}
+	return -1;
+}
+
+//The function gets 2d visited array, and vertex v, and returns true if the vertex v has an unvisited edge, false otherwise
+bool Graph::hasUnvisitedEdge(bool** visited, int v) {
+	for (auto itr = adjList[v].begin(); itr != adjList[v].end(); ++itr) {
+		if (!visited[v][*itr]) {
+			return true;
+		}
+	}
+	return false;
+}
+
 //Add new edge to the graph, If the graph is undirected, add the edge to both vertices
 void Graph::addEdge(int u, int v) {
 
@@ -59,7 +109,6 @@ bool Graph::isEulerian() {
 			}
 		}
 	}
-
 
 	return true;
 }
@@ -120,11 +169,41 @@ void Graph::printAdjacencyList(bool* visited) {
 	//for every node print if it 's visited or not
 	for (int i = 0; i < n; i++) {
 		std::cout << i << " : ";
-		if (visited[i]) {
+		if (visited[i] == true) {
 			std::cout << "visited" << std::endl;
 		}
 		else {
 			std::cout << "not visited" << std::endl;
 		}
 	}
+}
+
+//Function prints all the edges in the graph
+void Graph::printGraph() {
+	for (int i = 0; i < n; i++) {
+		std::cout << i << " : ";
+		for (auto itr = adjList[i].begin(); itr != adjList[i].end(); ++itr) {
+			std::cout << *itr << " ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+//Function iterates over the adjacency list and creates 2d array with the same dimention that will store wheter the node visited of not
+bool** Graph::createVisitedArray() {
+	bool** visited = new bool* [n];
+
+	//Create the 2d array
+	for (int i = 0; i < n; i++) {
+		visited[i] = new bool[adjList[i].size()];
+	}
+
+	//Initialize all the values with false
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < adjList[i].size(); j++) {
+			visited[i][j] = false;
+		}
+	}
+
+	return visited;
 }

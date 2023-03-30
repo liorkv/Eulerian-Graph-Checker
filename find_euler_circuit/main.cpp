@@ -31,4 +31,6 @@ int main() {
 	else
 		cout << "The graph is not Eulerian" << endl;
 
+
+	
 }

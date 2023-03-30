@@ -10,16 +10,16 @@ Graph::Graph(char isDirected, int n, int m) {
 	adjList = new std::list<int>[n];
 }
 
-//Destructor, delete the graph
 Graph::~Graph() {
-	
+
 }
 
 //Add new edge to the graph, If the graph is undirected, add the edge to both vertices
 void Graph::addEdge(int u, int v) {
-	adjList[u].push_back(v);
+
+	adjList[u-1].push_back(v-1);
 	if (isDirected == 'n') {
-		adjList[v].push_back(u);
+		adjList[v-1].push_back(u-1);
 	}
 }
 
@@ -66,83 +66,37 @@ bool Graph::isEulerian() {
 
 //The function return true if the graph is connected, false otherwise
 bool Graph::isGraphConnected() {
+	//Create a visited array
+	bool* isNodeVisited = new bool[n];
 
-	int i;
-
-	//array the will store the visited nodes
-	bool *visited = new bool[n];
-
-	//check if it's an empty graph
-	for ( i= 0; i < n; i++) {
-		if (adjList[i].size() != 0)
-			break;
+	//Initialize the visited array with false
+	for (int i = 0; i < n; i++) {
+		isNodeVisited[i] = false;
 	}
 
-	if (i == n)
-		return true; //return true if the graph is empty
+	//Call the Visit function to check if the graph is connected
+	Visit(isNodeVisited, 0);
 
-	DFS(visited);
-
-	//Check if the edges are visited
-	for (i = 0; i < n; i++) {
-		if (visited[i] == false && adjList->size() > 0) {
+	//Check if all the nodes are visited
+	for (int i = 0; i < n; i++) {
+		if (!isNodeVisited[i]) {
 			return false;
 		}
 	}
 
-	//free the dynamically allocated memory
-	delete[] visited;
-
 	return true;
 }
 
-void Graph::DFS(bool* visited) {
-	//Variable the is used as index in for loops
-	int i;
+void Graph::Visit(bool* visited, int u) {
+	visited[u] = true;
+	logMethodFor_Visit(visited, u);
 
-	//Initialize the array with false
-	for (i = 0; i < n; i++) {
-		visited[i] = false;
-	}
-
-	//Find a first node with non zero degree
-	for (i = 0; i < n; i++) {
-		if (adjList[i].size() != 0) {
-			break;
-		}
-	}
-
-	//Find not visited node and start a traversal
-	for (i = 0; i < n; i++) {
-		if (!visited[i]) {
-			Visit(visited, i);
-		}
-	}
-}
-
-void Graph::Visit(bool* visited, int nodeIndex) {
-	
-
-	//Mark that the current node has beed visited
-	visited[nodeIndex] = true;
-
-	//FOR TESTING PURPOSE ONLY
-	logMethodFor_Visit(visited, nodeIndex);
-	///////////////////////////////////////
-
-	//Go trough all the nodes that are connected to the current node
-	for (auto itr = adjList[nodeIndex].begin(); itr != adjList[nodeIndex].end(); ++itr) {
-
-		//FOR TESTING PURPOSE ONLY
-		cout << "Inside the loop in visit: " << *itr << endl;
-		//////////////////////////////////////////////
-
+	//Travers the adjacency list of the current node
+	for (auto itr = adjList[u].begin(); itr != adjList[u].end(); ++itr) {
 		if (!visited[*itr]) {
 			Visit(visited, *itr);
 		}
 	}
-
-	
 }
 
 //FOR TESTING PURPOSE ONLY

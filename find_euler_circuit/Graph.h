@@ -6,7 +6,7 @@ private:
 	char isDirected;
 	int n;
 	int m;
-	std::list<int> *adjList;
+	std::list<int>* adjList;
 
 public:
 	Graph(char isDirected, int n, int m);
@@ -26,8 +26,4 @@ public:
 
 	void printAdjacencyList(bool* visited);
 
-	//get n
-	int getN() {
-		return n;
-	}
 };

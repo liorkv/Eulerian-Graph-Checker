@@ -29,10 +29,6 @@ public:
 
 	void Visit(bool* visited, int nodeIndex);
 
-	void logMethodFor_Visit(bool* visited, int nodeIndex);
-
-	void printAdjacencyList(bool* visited);
-
 	void printGraph();
 
 	bool** createVisitedArray();

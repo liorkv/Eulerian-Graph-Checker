@@ -225,3 +225,55 @@ bool** Graph::createVisitedArray() {
 
 	return visited;
 }
+
+//static function that get isDirected parameter from the user
+bool Graph::getGraphDirectionInput(char &isDirected) {
+	//Ask the user if the graph is directed or undirected
+	cout << "Is the graph directed: y/n " << endl;
+	cin >> isDirected;
+
+	//check that is Directed is only 'y' or 'n'
+	if (isDirected != 'y' && isDirected != 'n')
+		return false;
+
+	return true;
+}
+
+//static function that get the number of vertices and edges from the user
+bool Graph::getGraphSizeInput(int& n, int& m) {
+	//Get from the user the number of nodes
+	cin >> n;
+
+	//Get from the user the number of edges
+	cin >> m;
+
+	if (n < 1 || m < 1) {
+		return false;
+	}
+
+	return true;
+}
+
+//function that get the edges from the user
+bool Graph::getGraphEdgesInput(int m) {
+	int u, v;
+	for (int i = 0; i < m; i++) {
+		cin >> u >> v;
+		if (u < 1 || v < 1 || u > n || v > n) {
+			return false;
+		}
+		addEdge(u, v);
+	}
+	return true;
+}
+
+//function that outputs if the graph is aulerian
+void Graph::printEulerianResult() {
+	if (isEulerian()) {
+		cout << "The graph is aulerian" << endl;
+		getEulerCircuit();
+	}
+	else {
+		cout << "The graph is not Eulerian" << endl;
+	}
+}

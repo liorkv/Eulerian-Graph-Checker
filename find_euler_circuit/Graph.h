@@ -33,4 +33,12 @@ public:
 
 	bool** createVisitedArray();
 
+	static bool getGraphDirectionInput(char& isDirected);
+
+	static bool getGraphSizeInput(int& n, int& m);
+
+	bool getGraphEdgesInput(int m);
+
+	void printEulerianResult();
+
 };

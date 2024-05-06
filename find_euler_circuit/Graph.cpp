@@ -229,7 +229,7 @@ bool** Graph::createVisitedArray() {
 //static function that get isDirected parameter from the user
 bool Graph::getGraphDirectionInput(char &isDirected) {
 	//Ask the user if the graph is directed or undirected
-	cout << "Is the graph directed: y/n " << endl;
+	cout << "Is the graph directed: y/n\n " << endl;
 	cin >> isDirected;
 
 	//check that is Directed is only 'y' or 'n'
@@ -241,9 +241,13 @@ bool Graph::getGraphDirectionInput(char &isDirected) {
 
 //static function that get the number of vertices and edges from the user
 bool Graph::getGraphSizeInput(int& n, int& m) {
+
+	cout << "What is the number of nodes? \n " << endl;
+
 	//Get from the user the number of nodes
 	cin >> n;
 
+	cout << "What is the number of edges? \n " << endl;
 	//Get from the user the number of edges
 	cin >> m;
 
@@ -256,6 +260,9 @@ bool Graph::getGraphSizeInput(int& n, int& m) {
 
 //function that get the edges from the user
 bool Graph::getGraphEdgesInput(int m) {
+
+	cout << "Provide the edges of the graph: \n " << endl;
+
 	int u, v;
 	for (int i = 0; i < m; i++) {
 		cin >> u >> v;

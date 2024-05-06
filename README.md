@@ -1,4 +1,4 @@
-# Graph Eulerian Checker
+# Eulerian Graph Checker
 
 ## Overview
 
